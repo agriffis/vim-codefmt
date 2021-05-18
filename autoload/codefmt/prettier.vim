@@ -38,21 +38,7 @@ function! codefmt#prettier#GetFormatter() abort
           \ 'and configure the prettier_executable flag'}
 
   function l:formatter.IsAvailable() abort
-    if !exists('s:prettier_is_available')
-      let s:prettier_is_available = 0
-      let l:cmd = codefmt#formatterhelpers#ResolveFlagToArray(
-            \ 'prettier_executable')
-      if !empty(l:cmd) && executable(l:cmd[0])
-        " Unfortunately the availability of npx isn't enough to tell whether
-        " prettier is available, and npx doesn't have a way of telling us.
-        " Fetching the prettier version should suffice.
-        let l:result = maktaba#syscall#Create(l:cmd + ['--version']).Call(0)
-        if v:shell_error == 0
-          let s:prettier_is_available = 1
-        endif
-      endif
-    endif
-    return s:prettier_is_available
+    return v:true
   endfunction
 
   function l:formatter.AppliesToBuffer() abort
